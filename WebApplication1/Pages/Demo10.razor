@@ -1,0 +1,60 @@
+﻿@page "/demo10"
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@model" OnValidSubmit="HandleValidSubmitAsync">
+	<CustomValidation @ref="customValidation" />
+	<DataAnnotationsValidator />
+
+	<InputText @bind-Value="model.Name" />
+	<button type="submit">Submit</button>
+	<ValidationMessage For="() => model.Name" />
+</EditForm>
+
+@code {
+	private ExampleModel model = new ExampleModel();
+	private CustomValidation customValidation;
+
+	public class ExampleModel
+	{
+		[Required(ErrorMessage = "Please fill the name.")]
+		public string Name { get; set; }
+	}
+
+	public async Task HandleValidSubmitAsync()
+	{
+		// verify on server (start)
+		if (!await CustomVerifyAsync())
+		{
+			return;
+		}
+
+		// verify on server (end)
+		// process
+	}
+
+	private /*async*/ Task<bool> CustomVerifyAsync()
+	{
+		bool result = true; // OK
+		customValidation.ClearErrors();
+
+		if (model.Name.ToLower().Contains("a"))
+		{
+			customValidation.AddError(nameof(model.Name), "Name cannot contain 'A'.");
+			result = false;
+		}
+
+		if (model.Name.ToLower().Contains("b"))
+		{
+			customValidation.AddError(nameof(model.Name), "Name cannot contain 'B'.");
+			result = false;
+		}
+
+		if (model.Name.ToLower().Contains("baba"))
+		{
+			customValidation.AddError(nameof(model.Name), "Name already exists.");
+			result = false;
+		}
+
+		return Task.FromResult(result);
+	}
+}

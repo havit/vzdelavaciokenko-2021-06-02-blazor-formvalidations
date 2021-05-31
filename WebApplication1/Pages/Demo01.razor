@@ -1,0 +1,15 @@
+﻿@page "/demo01"
+
+<EditForm Model="@model">
+	<input type="text" @bind="model.Name" />
+	<button type="submit">Submit</button>
+</EditForm>
+
+@code {
+	private ExampleModel model = new ExampleModel();
+
+	public class ExampleModel
+	{
+		public string Name { get; set; }
+	}
+}

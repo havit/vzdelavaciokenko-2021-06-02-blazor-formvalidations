@@ -1,0 +1,22 @@
+﻿@page "/demo05"
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@model">
+	<DataAnnotationsValidator />
+
+	<InputText @bind-Value="model.Name" />
+	<button type="submit">Submit</button>
+	<ValidationMessage For="() => model.Name" />
+</EditForm>
+
+@code {
+	private ExampleModel model = new ExampleModel();
+
+	public class ExampleModel
+	{
+		[Required(
+			ErrorMessageResourceType = typeof(Resources.ExampleModelResources),
+			ErrorMessageResourceName = nameof(Resources.ExampleModelResources.NameRequired))]
+		public string Name { get; set; }
+	}
+}

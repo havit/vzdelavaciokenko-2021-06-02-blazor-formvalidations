@@ -1,0 +1,45 @@
+﻿@page "/demo08"
+@using System.ComponentModel.DataAnnotations
+
+<EditForm EditContext="@editContext"> /* OnValidSubmit="" */
+	<DataAnnotationsValidator />
+
+	<InputText @bind-Value="model.Name" />
+	<button type="button" @onclick="HandleButton1Click">Button1</button>
+	<button type="button" @onclick="HandleButton2Click">Button2</button>
+	<ValidationMessage For="() => model.Name" />
+</EditForm>
+
+@code {
+	private ExampleModel model = new ExampleModel();
+	private EditContext editContext;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		editContext = new EditContext(model);
+	}
+
+	public class ExampleModel
+	{
+		[Required(ErrorMessage = "Please fill the name.")]
+		public string Name { get; set; }
+	}
+
+	public void HandleButton1Click()
+	{
+		if (editContext.Validate())
+		{
+			///...
+		}
+	}
+
+	public void HandleButton2Click()
+	{
+		if (editContext.Validate())
+		{
+			///...
+		}
+	}
+
+}

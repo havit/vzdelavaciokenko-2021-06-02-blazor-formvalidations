@@ -1,0 +1,21 @@
+﻿@page "/demo04"
+@using System.ComponentModel.DataAnnotations
+@using Havit.Blazor.Components.Web.Bootstrap
+
+<EditForm Model="@model">
+	<DataAnnotationsValidator />
+		
+	<HxInputText Label="Name" @bind-Value="@model.Name" />
+
+	<button type="submit">Submit</button>
+</EditForm>
+
+@code {
+	private ExampleModel model = new ExampleModel();
+
+	public class ExampleModel
+	{
+		[Required(ErrorMessage = "Please fill the name.")]
+		public string Name { get; set; }
+	}
+}

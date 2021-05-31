@@ -1,0 +1,29 @@
+﻿@page "/demo06"
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@model">
+	<DataAnnotationsValidator />
+
+	<InputCheckbox @bind-Value="model.Checked" />
+	<InputText @bind-Value="model.Name" />
+	<button type="submit">Submit</button>
+	<ValidationMessage For="() => model.Name" />
+</EditForm>
+
+@code {
+	private ExampleModel model = new ExampleModel();
+
+	public class ExampleModel : IValidatableObject
+	{
+		public bool Checked { get; set; }
+		public string Name { get; set; }
+
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+			if (Checked && String.IsNullOrEmpty(Name))
+			{
+				yield return new ValidationResult("Pokud zaškrtneš checkbox, musíš zadat název.", new[] { nameof(Name) });
+			}
+		}
+	}
+}
